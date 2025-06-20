@@ -44,12 +44,12 @@ cd Distributed-K-Means-Clustering-using-Apache-Spark
 
 Start the Spark cluster For single worker
 ```bash
-docker up -d
+docker compose up -d
 ```
 
 ### For multiple workers, modify docker-compose.yml and scale the worker service
 ```bash
-docker-compose up -d --scale spark-worker=2
+docker compose up -d --scale spark-worker=2
 ```
 
 Submit the K-means job
