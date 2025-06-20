@@ -85,3 +85,7 @@ docker exec spark-master spark-submit \
 
 - Open http://localhost:8080 to view cluster status
 - Monitor job progress and resource utilization
+
+  ### Performance Visualization
+  <img width="451" alt="image" src="https://github.com/user-attachments/assets/709fe3a2-f72a-48ef-8155-f57809b2151a" />
+
