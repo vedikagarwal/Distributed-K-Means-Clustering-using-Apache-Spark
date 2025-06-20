@@ -36,23 +36,27 @@ This project implements and analyzes distributed K-means clustering on the massi
 
 ### Running the Experiment
 
-Clone the repository
+1. Clone the repository
 ```bash
 git clone https://github.com/vedikagarwal/Distributed-K-Means-Clustering-using-Apache-Spark.git
 cd Distributed-K-Means-Clustering-using-Apache-Spark
 ```
 
-Start the Spark cluster For single worker
+2. Download the HIGGS dataset
 ```bash
-docker compose up -d
+ wget https://archive.ics.uci.edu/ml/machine-learning-databases/00280/HIGGS.csv.gz
+gunzip HIGGS.csv.gz
+mv HIGGS.csv ./data/
 ```
 
-### For multiple workers, modify docker-compose.yml and scale the worker service
+3. Start the Spark cluster For single worker
 ```bash
-docker compose up -d --scale spark-worker=2
+docker compose up -d  # For single worker
+
+docker compose up -d --scale spark-worker=2  # For multiple workers, modify docker-compose.yml and scale the worker service
 ```
 
-Submit the K-means job
+4. Submit the K-means job
 
 ```bash
 docker exec spark-master spark-submit \
