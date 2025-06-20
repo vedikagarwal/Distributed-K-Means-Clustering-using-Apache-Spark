@@ -7,44 +7,34 @@ This project implements and analyzes distributed K-means clustering on the massi
 
 ## Key Results
 
-Optimal Performance: 2-worker configuration achieved 39.6% improvement (98.84s vs 163.18s baseline)
-Diminishing Returns: 5-worker setup performed nearly identical to single-worker (164.22s vs 163.18s)
-Algorithmic Consistency: All configurations produced identical cluster centers
-Real-world Validation: Demonstrated Amdahl's Law and distributed computing trade-offs
+- Optimal Performance: 2-worker configuration achieved 39.6% improvement (98.84s vs 163.18s baseline)
+- Diminishing Returns: 5-worker setup performed nearly identical to single-worker (164.22s vs 163.18s)
+- Algorithmic Consistency: All configurations produced identical cluster centers
+- Real-world Validation: Demonstrated Amdahl's Law and distributed computing trade-offs
 
 ## Architecture
-Infrastructure Setup
 
-Framework: Apache Spark 3.4 (Bitnami Docker Images)
-Orchestration: Docker Compose
-Algorithm: K-Means Clustering via PySpark MLlib
-Dataset: HIGGS Dataset (7.5GB, 11M records, 28 features)
+### Infrastructure Setup
 
-Cluster Configurations Tested
+- Framework: Apache Spark 3.4 (Bitnami Docker Images)
+- Orchestration: Docker Compose
+- Algorithm: K-Means Clustering via PySpark MLlib
+- Dataset: HIGGS Dataset (7.5GB, 11M records, 28 features)
 
-Single Worker: 1 master + 1 worker (11 cores, 6.7 GiB)
-Two Workers: 1 master + 2 workers (22 cores, 13.4 GiB)
-Five Workers: 1 master + 5 workers (55 cores, 33.5 GiB)
+### Cluster Configurations Tested
 
-## Project Structure
-spark-kmeans-project/
-├── app/
-│   └── kmeans_spark.py          # Main clustering implementation
-├── data/
-│   └── HIGGS.csv               # Dataset (download separately)
-├── docker-compose.yml          # Multi-container orchestration                
-├── visualization/
-│   └── Visualization_K-Means_Performance.ipynb 
-└── README.md 
+- Single Worker: 1 master + 1 worker (11 cores, 6.7 GiB)
+- Two Workers: 1 master + 2 workers (22 cores, 13.4 GiB)
+- Five Workers: 1 master + 5 workers (55 cores, 33.5 GiB)
 
 ## Quick Start
-Prerequisites
 
-Docker installed
-At least 8GB RAM available
-HIGGS dataset downloaded to ./data/ directory
+### Prerequisites
 
-Running the Experiment
+- Docker installed
+- At least 8GB RAM available
+
+### Running the Experiment
 
 Clone the repository
 ```bash
@@ -52,36 +42,27 @@ git clone https://github.com/vedikagarwal/Distributed-K-Means-Clustering-using-A
 cd Distributed-K-Means-Clustering-using-Apache-Spark
 ```
 
-Download the HIGGS dataset
-
-```bash
-wget https://archive.ics.uci.edu/ml/machine-learning-databases/00280/HIGGS.csv.gz
-gunzip HIGGS.csv.gz
-mv HIGGS.csv ./data/
-```
-bash# Download from UCI ML Repository
-wget https://archive.ics.uci.edu/ml/machine-learning-databases/00280/HIGGS.csv.gz
-gunzip HIGGS.csv.gz
-mv HIGGS.csv ./data/
-
-Start the Spark cluster
-bash# For single worker
+Start the Spark cluster For single worker
 ```bash
 docker up -d
 ```
 
-# For multiple workers, modify docker-compose.yml
-# and scale the worker service
+### For multiple workers, modify docker-compose.yml and scale the worker service
+```bash
 docker-compose up -d --scale spark-worker=2
+```
 
 Submit the K-means job
-bashdocker exec spark-master spark-submit \
+
+```bash
+docker exec spark-master spark-submit \
   --master spark://spark-master:7077 \
   --executor-memory 1g \
   --total-executor-cores 11 \
   /tmp/app/kmeans_spark.py
+```
 
-Monitor via Spark UI
+### Monitor via Spark UI
 
-Open http://localhost:8080 to view cluster status
-Monitor job progress and resource utilization
+- Open http://localhost:8080 to view cluster status
+- Monitor job progress and resource utilization
