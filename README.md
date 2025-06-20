@@ -49,11 +49,27 @@ gunzip HIGGS.csv.gz
 mv HIGGS.csv ./data/
 ```
 
-3. Start the Spark cluster For single worker
+3. Start the Spark cluster
 ```bash
 docker compose up -d  # For single worker
+```
 
-docker compose up -d --scale spark-worker=2  # For multiple workers, modify docker-compose.yml and scale the worker service
+4. For multiple workers, add more worker services
+```yaml
+
+# Add to docker-compose.yml for 2-worker setup
+   spark-worker-2:
+  image: bitnami/spark:3.4
+  platform: linux/arm64
+  container_name: spark-worker-2
+  environment:
+    - SPARK_MODE=worker
+    - SPARK_MASTER_URL=spark://spark-master:7077
+  depends_on:
+    - spark-master
+  volumes:
+    - ./data:/tmp/data
+    - ./app:/opt/spark-apps
 ```
 
 4. Submit the K-means job
@@ -62,8 +78,7 @@ docker compose up -d --scale spark-worker=2  # For multiple workers, modify dock
 docker exec spark-master spark-submit \
   --master spark://spark-master:7077 \
   --executor-memory 1g \
-  --total-executor-cores 11 \
-  /tmp/app/kmeans_spark.py
+  /opt/spark-apps/kmeans_spark.py
 ```
 
 ### Monitor via Spark UI
